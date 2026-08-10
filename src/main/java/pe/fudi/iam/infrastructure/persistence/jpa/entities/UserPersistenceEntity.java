@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pe.fudi.shared.infrastructure.persistence.jpa.entities.AuditableAbstractPersistenceEntity;
 
@@ -12,7 +11,6 @@ import pe.fudi.shared.infrastructure.persistence.jpa.entities.AuditableAbstractP
 @Table(name = "users")
 @Getter
 @Setter
-@NoArgsConstructor
 public class UserPersistenceEntity extends AuditableAbstractPersistenceEntity {
 
     @Column(name = "username", nullable = false, unique = true, length = 30)
