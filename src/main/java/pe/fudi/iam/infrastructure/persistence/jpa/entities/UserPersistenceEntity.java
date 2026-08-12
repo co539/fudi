@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import pe.fudi.iam.domain.model.valueobjects.Email;
+import pe.fudi.iam.domain.model.valueobjects.Username;
 import pe.fudi.shared.infrastructure.persistence.jpa.entities.AuditableAbstractPersistenceEntity;
 
 @Entity
@@ -14,10 +16,8 @@ import pe.fudi.shared.infrastructure.persistence.jpa.entities.AuditableAbstractP
 public class UserPersistenceEntity extends AuditableAbstractPersistenceEntity {
 
     @Column(name = "username", nullable = false, unique = true, length = 30)
-    private String username;
+    private Username username;
 
     @Column(name = "email", nullable = false, unique = true, length = 120)
-    private String email;
-
-
+    private Email email;
 }
