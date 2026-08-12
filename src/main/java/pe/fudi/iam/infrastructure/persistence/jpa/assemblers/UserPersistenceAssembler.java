@@ -12,20 +12,38 @@ public final class UserPersistenceAssembler {
     }
 
     public static User toDomainFromPersistence(UserPersistenceEntity entity) {
-        if (entity == null) return null;
+        if (entity == null) {
+            return null;
+        }
+
         var domain = new User();
         domain.setId(entity.getId());
         domain.setUsername(entity.getUsername());
         domain.setEmail(entity.getEmail());
+        domain.setPassword(entity.getPassword());
+        domain.setRoles(
+                entity.getRoles().stream()
+                        .map(RolePersistenceAssembler::toDomainFromPersistence)
+                        .collect(java.util.stream.Collectors.toSet())
+        );
+
         return domain;
     }
 
     public static UserPersistenceEntity toPersistenceFromDomain(User user) {
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
+
         var entity = new UserPersistenceEntity();
-        if (user.getId() != null) entity.setId(user.getId());
+
+        if (user.getId() != null) {
+            entity.setId(user.getId());
+        }
+
         entity.setUsername(user.getUsername());
         entity.setEmail(user.getEmail());
+
         return entity;
     }
 }
