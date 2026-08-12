@@ -53,4 +53,11 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean existsByEmail(Email email) {
         return userPersistenceRepository.existsByEmail(email);
     }
+
+    @Override
+    public User save(User user) {
+        var entity = UserPersistenceAssembler.toPersistenceFromDomain(user);
+        userPersistenceRepository.persist(entity);
+        return UserPersistenceAssembler.toDomainFromPersistence(entity);
+    }
 }
