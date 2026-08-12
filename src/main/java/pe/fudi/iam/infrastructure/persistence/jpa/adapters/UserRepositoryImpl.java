@@ -28,13 +28,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(Username username) {
-        return userPersistenceRepository.findByUsername(username.value())
+        return userPersistenceRepository.findByUsername(username)
                 .map(UserPersistenceAssembler::toDomainFromPersistence);
     }
 
     @Override
     public Optional<User> findByEmail(Email email) {
-        return userPersistenceRepository.findByEmail(email.value())
+        return userPersistenceRepository.findByEmail(email)
                 .map(UserPersistenceAssembler::toDomainFromPersistence);
     }
 
@@ -46,12 +46,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existsByUsername(Username username) {
-        return userPersistenceRepository.existsByUsername(username.value());
+    public boolean existsByUsername(Username username) { return userPersistenceRepository.existsByUsername(username);
     }
 
     @Override
     public boolean existsByEmail(Email email) {
-        return userPersistenceRepository.existsByEmail(email.value());
+        return userPersistenceRepository.existsByEmail(email);
     }
 }

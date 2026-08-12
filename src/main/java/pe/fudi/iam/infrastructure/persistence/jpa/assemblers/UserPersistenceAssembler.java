@@ -12,23 +12,20 @@ public final class UserPersistenceAssembler {
     }
 
     public static User toDomainFromPersistence(UserPersistenceEntity entity) {
-
         if (entity == null) return null;
-
         var domain = new User();
         domain.setId(entity.getId());
-        domain.setUsername(new Username(entity.getUsername()));
-        domain.setEmail(new Email(entity.getEmail()));
+        domain.setUsername(entity.getUsername());
+        domain.setEmail(entity.getEmail());
         return domain;
     }
 
     public static UserPersistenceEntity toPersistenceFromDomain(User user) {
         if (user == null) return null;
-
         var entity = new UserPersistenceEntity();
         if (user.getId() != null) entity.setId(user.getId());
-        entity.setUsername(user.getUsername().value());
-        entity.setEmail(user.getEmail().value());
+        entity.setUsername(user.getUsername());
+        entity.setEmail(user.getEmail());
         return entity;
     }
 }
