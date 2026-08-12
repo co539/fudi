@@ -29,7 +29,7 @@ public class Role {
         return new Role(Roles.valueOf(name));
     }
 
-    public static List<Role>validationRoleSet(List<Role> roles){
+    public static List<Role>validateRoleSet(List<Role> roles){
         if (roles==null || roles.isEmpty()) return List.of(getDefaultRole());
         return roles;
     }
