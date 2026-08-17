@@ -11,7 +11,7 @@ import java.util.List;
 public class Role {
 
     private Long id;
-    private final Roles name;
+    private Roles name;
 
     public Role(Roles name) {
         this.name = name;
