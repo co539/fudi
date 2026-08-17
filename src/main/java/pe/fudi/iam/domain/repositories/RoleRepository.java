@@ -10,4 +10,6 @@ public interface RoleRepository {
     Optional<Role> findByName(Roles name);
 
     boolean existsByName(Roles name);
+
+    Role save(Role role);
 }

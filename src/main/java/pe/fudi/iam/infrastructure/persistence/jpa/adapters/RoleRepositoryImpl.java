@@ -28,4 +28,10 @@ public class RoleRepositoryImpl implements RoleRepository {
     public boolean existsByName(Roles name) {
         return rolePersistenceRepository.existsByName(name);
     }
+
+    public Role save(Role role) {
+        var entity = RolePersistenceAssembler.toPersistenceFromDomain(role);
+        rolePersistenceRepository.persist(entity);
+        return RolePersistenceAssembler.toDomainFromPersistence(entity);
+    }
 }
