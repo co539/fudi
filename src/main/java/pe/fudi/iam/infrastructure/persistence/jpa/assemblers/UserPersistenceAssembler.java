@@ -1,9 +1,9 @@
 package pe.fudi.iam.infrastructure.persistence.jpa.assemblers;
 
 import pe.fudi.iam.domain.model.aggregates.User;
-import pe.fudi.iam.domain.model.valueobjects.Email;
-import pe.fudi.iam.domain.model.valueobjects.Username;
 import pe.fudi.iam.infrastructure.persistence.jpa.entities.UserPersistenceEntity;
+
+import java.util.stream.Collectors;
 
 public final class UserPersistenceAssembler {
 
@@ -24,7 +24,7 @@ public final class UserPersistenceAssembler {
         domain.setRoles(
                 entity.getRoles().stream()
                         .map(RolePersistenceAssembler::toDomainFromPersistence)
-                        .collect(java.util.stream.Collectors.toSet())
+                        .collect(Collectors.toSet())
         );
 
         return domain;
@@ -43,6 +43,12 @@ public final class UserPersistenceAssembler {
 
         entity.setUsername(user.getUsername());
         entity.setEmail(user.getEmail());
+        entity.setPassword(user.getPassword());
+        entity.setRoles(
+                user.getRoles().stream()
+                        .map(RolePersistenceAssembler::toPersistenceFromDomain)
+                        .collect(Collectors.toSet())
+        );
 
         return entity;
     }
