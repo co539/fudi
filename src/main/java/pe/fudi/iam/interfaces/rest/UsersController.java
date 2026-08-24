@@ -1,7 +1,10 @@
 package pe.fudi.iam.interfaces.rest;
 
+import jakarta.validation.Valid;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -13,9 +16,13 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.jboss.resteasy.reactive.ResponseStatus;
+import pe.fudi.iam.application.commandservices.UserCommandService;
 import pe.fudi.iam.application.queryservices.UserQueryService;
 import pe.fudi.iam.domain.model.queries.GetUserByIdQuery;
+import pe.fudi.iam.interfaces.rest.resources.SignUpResource;
 import pe.fudi.iam.interfaces.rest.resources.UserResource;
+import pe.fudi.iam.interfaces.rest.transform.SignUpCommandFromResourceAssembler;
 import pe.fudi.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
 
 import java.util.List;
@@ -25,9 +32,11 @@ import java.util.List;
 public class UsersController {
 
     private final UserQueryService userQueryService;
+    private final UserCommandService userCommandService;
 
-    public UsersController(UserQueryService userQueryService) {
+    public UsersController(UserQueryService userQueryService, UserCommandService userCommandService) {
         this.userQueryService = userQueryService;
+        this.userCommandService = userCommandService;
     }
 
     @GET
@@ -73,6 +82,30 @@ public class UsersController {
     ) {
         var user = userQueryService.getUserById(new GetUserByIdQuery(userId))
                 .orElseThrow(NotFoundException::new);
+        return UserResourceFromEntityAssembler.toResourceFromEntity(user);
+    }
+
+    @POST
+    @Path("/sign-up")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @ResponseStatus(201)
+    @Operation(
+            summary = "Sign up",
+            description = "Creates a new user account with the given credentials and roles."
+    )
+    @APIResponse(
+            responseCode = "201",
+            description = "User created successfully",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = UserResource.class)
+            )
+    )
+    @APIResponse(responseCode = "400", description = "Invalid sign-up request")
+    public UserResource signUp(@Valid SignUpResource resource) {
+        var command = SignUpCommandFromResourceAssembler.toCommandFromResource(resource);
+        var user = userCommandService.signUp(command);
         return UserResourceFromEntityAssembler.toResourceFromEntity(user);
     }
 }

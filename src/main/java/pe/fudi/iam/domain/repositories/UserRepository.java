@@ -20,4 +20,6 @@ public interface UserRepository {
     boolean existsByUsername(Username username);
 
     boolean existsByEmail(Email email);
+
+    User save(User user);
 }
