@@ -42,7 +42,6 @@ public class User {
     public User(Username username, Email email, String password, List<Role> roles) {
         this(username, email, password);
         addRoles(roles);
-
     }
 
     public User addRole(Role role) {
