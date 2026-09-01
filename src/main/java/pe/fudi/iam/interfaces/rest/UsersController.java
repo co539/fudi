@@ -19,6 +19,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.ResponseStatus;
 import pe.fudi.iam.application.commandservices.UserCommandService;
 import pe.fudi.iam.application.queryservices.UserQueryService;
+import pe.fudi.iam.domain.model.queries.GetAllUsersQuery;
 import pe.fudi.iam.domain.model.queries.GetUserByIdQuery;
 import pe.fudi.iam.interfaces.rest.resources.SignUpResource;
 import pe.fudi.iam.interfaces.rest.resources.UserResource;
@@ -34,7 +35,9 @@ public class UsersController {
     private final UserQueryService userQueryService;
     private final UserCommandService userCommandService;
 
-    public UsersController(UserQueryService userQueryService, UserCommandService userCommandService) {
+    public UsersController(
+            UserQueryService userQueryService,
+            UserCommandService userCommandService) {
         this.userQueryService = userQueryService;
         this.userCommandService = userCommandService;
     }
@@ -50,11 +53,15 @@ public class UsersController {
             description = "Users retrieved successfully",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(type = SchemaType.ARRAY, implementation = UserResource.class)
+                    schema = @Schema(
+                            type = SchemaType.ARRAY,
+                            implementation = UserResource.class
+                    )
             )
     )
     public List<UserResource> getAllUsers() {
-        return userQueryService.getAllUsers().stream()
+        return userQueryService.getAllUsers(new GetAllUsersQuery())
+                .stream()
                 .map(UserResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
     }
@@ -74,14 +81,22 @@ public class UsersController {
                     schema = @Schema(implementation = UserResource.class)
             )
     )
-    @APIResponse(responseCode = "404", description = "User not found")
+    @APIResponse(
+            responseCode = "404",
+            description = "User not found"
+    )
     public UserResource getUserById(
             @PathParam("userId")
-            @Parameter(description = "Unique user identifier", example = "1", required = true)
+            @Parameter(
+                    description = "Unique user identifier",
+                    example = "1",
+                    required = true
+            )
             Long userId
     ) {
         var user = userQueryService.getUserById(new GetUserByIdQuery(userId))
                 .orElseThrow(NotFoundException::new);
+
         return UserResourceFromEntityAssembler.toResourceFromEntity(user);
     }
 
@@ -102,10 +117,14 @@ public class UsersController {
                     schema = @Schema(implementation = UserResource.class)
             )
     )
-    @APIResponse(responseCode = "400", description = "Invalid sign-up request")
+    @APIResponse(
+            responseCode = "400",
+            description = "Invalid sign-up request"
+    )
     public UserResource signUp(@Valid SignUpResource resource) {
         var command = SignUpCommandFromResourceAssembler.toCommandFromResource(resource);
         var user = userCommandService.signUp(command);
+
         return UserResourceFromEntityAssembler.toResourceFromEntity(user);
     }
 }
