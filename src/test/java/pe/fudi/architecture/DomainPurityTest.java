@@ -11,7 +11,6 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
         packages = "pe.fudi",
         importOptions = ImportOption.DoNotIncludeTests.class
 )
-
 class DomainPurityTest {
 
     @ArchTest
@@ -21,13 +20,13 @@ class DomainPurityTest {
                     .should().dependOnClassesThat()
                     .resideInAnyPackage(
                             "jakarta.persistence..",
-                            "io.quarkus..",
-                            "jakarta.ws.rs.."
+                            "jakarta.ws.rs..",
+                            "io.quarkus.."
                     )
-                    .because("Domain classes must be expressible without any framework dependencies");
+                    .because("Domain classes must be expressible without framework dependencies");
 
     @ArchTest
-    static final ArchRule domainMustNotBeDependantOnInfrastructure =
+    static final ArchRule domainMustNotDependOnInfrastructure =
             noClasses()
                     .that().resideInAPackage("..domain..")
                     .should().dependOnClassesThat()
