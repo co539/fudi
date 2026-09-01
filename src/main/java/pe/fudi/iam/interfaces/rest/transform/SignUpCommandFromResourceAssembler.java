@@ -11,18 +11,20 @@ import java.util.List;
 public final class SignUpCommandFromResourceAssembler {
 
     private SignUpCommandFromResourceAssembler() {
-        /* This utility class should not be instantiated */
     }
 
     public static SignUpCommand toCommandFromResource(SignUpResource resource) {
         var roles = resource.roles() == null || resource.roles().isEmpty()
                 ? List.of(Role.getDefaultRole())
-                : resource.roles().stream().map(Role::toRoleFromName).toList();
+                : resource.roles().stream()
+                .map(Role::toRoleFromName)
+                .toList();
 
         return new SignUpCommand(
                 new Username(resource.username()),
                 new Email(resource.email()),
                 resource.password(),
-                roles);
+                roles
+        );
     }
 }

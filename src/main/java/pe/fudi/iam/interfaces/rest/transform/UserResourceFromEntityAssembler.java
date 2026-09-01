@@ -7,7 +7,6 @@ import pe.fudi.iam.interfaces.rest.resources.UserResource;
 public final class UserResourceFromEntityAssembler {
 
     private UserResourceFromEntityAssembler() {
-        /* This utility class should not be instantiated */
     }
 
     public static UserResource toResourceFromEntity(User user) {

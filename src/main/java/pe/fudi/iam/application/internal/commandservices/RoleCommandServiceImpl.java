@@ -8,8 +8,6 @@ import pe.fudi.iam.domain.model.entities.Role;
 import pe.fudi.iam.domain.model.valueobjects.Roles;
 import pe.fudi.iam.domain.repositories.RoleRepository;
 
-import java.util.Arrays;
-
 @ApplicationScoped
 public class RoleCommandServiceImpl implements RoleCommandService {
 
