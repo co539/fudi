@@ -8,9 +8,9 @@ import pe.fudi.iam.interfaces.rest.resources.SignUpResource;
 
 import java.util.List;
 
-public final class SignUpCommandFromResourceAssembler {
+public final class SignUpCommandAssembler {
 
-    private SignUpCommandFromResourceAssembler() {
+    private SignUpCommandAssembler() {
     }
 
     public static SignUpCommand toCommandFromResource(SignUpResource resource) {

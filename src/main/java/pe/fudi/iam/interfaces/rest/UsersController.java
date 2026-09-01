@@ -23,8 +23,8 @@ import pe.fudi.iam.domain.model.queries.GetAllUsersQuery;
 import pe.fudi.iam.domain.model.queries.GetUserByIdQuery;
 import pe.fudi.iam.interfaces.rest.resources.SignUpResource;
 import pe.fudi.iam.interfaces.rest.resources.UserResource;
-import pe.fudi.iam.interfaces.rest.transform.SignUpCommandFromResourceAssembler;
-import pe.fudi.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
+import pe.fudi.iam.interfaces.rest.transform.SignUpCommandAssembler;
+import pe.fudi.iam.interfaces.rest.transform.UserResourceAssembler;
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ public class UsersController {
     public List<UserResource> getAllUsers() {
         return userQueryService.getAllUsers(new GetAllUsersQuery())
                 .stream()
-                .map(UserResourceFromEntityAssembler::toResourceFromEntity)
+                .map(UserResourceAssembler::toResourceFromEntity)
                 .toList();
     }
 
@@ -97,7 +97,7 @@ public class UsersController {
         var user = userQueryService.getUserById(new GetUserByIdQuery(userId))
                 .orElseThrow(NotFoundException::new);
 
-        return UserResourceFromEntityAssembler.toResourceFromEntity(user);
+        return UserResourceAssembler.toResourceFromEntity(user);
     }
 
     @POST
@@ -122,9 +122,9 @@ public class UsersController {
             description = "Invalid sign-up request"
     )
     public UserResource signUp(@Valid SignUpResource resource) {
-        var command = SignUpCommandFromResourceAssembler.toCommandFromResource(resource);
+        var command = SignUpCommandAssembler.toCommandFromResource(resource);
         var user = userCommandService.signUp(command);
 
-        return UserResourceFromEntityAssembler.toResourceFromEntity(user);
+        return UserResourceAssembler.toResourceFromEntity(user);
     }
 }
