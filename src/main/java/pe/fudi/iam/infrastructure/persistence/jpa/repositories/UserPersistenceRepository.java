@@ -16,7 +16,7 @@ public class UserPersistenceRepository implements PanacheRepository<UserPersiste
         return find("username", username).firstResultOptional();
     }
 
-    public boolean existsByUsername(Username username){
+    public boolean existsByUsername(Username username) {
         return count("username", username) > 0;
     }
 
@@ -24,11 +24,15 @@ public class UserPersistenceRepository implements PanacheRepository<UserPersiste
         return find("email", email).firstResultOptional();
     }
 
-    public boolean existsByEmail(Email email){
+    public boolean existsByEmail(Email email) {
         return count("email", email) > 0;
     }
 
     public List<UserPersistenceEntity> listAllWithRoles() {
-        return find("select distinct u from UserPersistenceEntity u left join fetch u.roles").list();
+        return find("""
+                select distinct u
+                from UserPersistenceEntity u
+                left join fetch u.roles
+                """).list();
     }
 }
