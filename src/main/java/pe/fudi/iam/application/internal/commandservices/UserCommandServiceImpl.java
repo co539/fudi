@@ -11,7 +11,6 @@ import pe.fudi.iam.domain.repositories.RoleRepository;
 import pe.fudi.iam.domain.repositories.UserRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @ApplicationScoped
 public class UserCommandServiceImpl implements UserCommandService {
@@ -35,21 +34,29 @@ public class UserCommandServiceImpl implements UserCommandService {
         if (userRepository.existsByUsername(command.username())) {
             throw new IllegalArgumentException("Username already exists");
         }
+
         if (userRepository.existsByEmail(command.email())) {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        List<Role> resolvedRoles = new ArrayList<>();
+        var resolvedRoles = new ArrayList<Role>();
+
         for (Role role : command.roles()) {
-            var found = roleRepository.findByName(role.getName());
-            if (found.isEmpty()) {
-                throw new IllegalArgumentException("Role not found: " + role.getName());
-            }
-            resolvedRoles.add(found.get());
+            var resolvedRole = roleRepository.findByName(role.getName())
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("Role not found: " + role.getName()));
+
+            resolvedRoles.add(resolvedRole);
         }
 
         var hashedPassword = hashingService.hash(command.password());
-        var user = new User(command.username(), command.email(), hashedPassword);
+
+        var user = new User(
+                command.username(),
+                command.email(),
+                hashedPassword
+        );
+
         user.addRoles(resolvedRoles);
 
         return userRepository.save(user);

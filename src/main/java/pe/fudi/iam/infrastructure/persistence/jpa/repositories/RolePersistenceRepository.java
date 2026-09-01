@@ -14,5 +14,7 @@ public class RolePersistenceRepository implements PanacheRepository<RolePersiste
         return find("name", name).firstResultOptional();
     }
 
-    public boolean existsByName(Roles name) {return count("name", name) > 0;}
+    public boolean existsByName(Roles name) {
+        return count("name", name) > 0;
+    }
 }

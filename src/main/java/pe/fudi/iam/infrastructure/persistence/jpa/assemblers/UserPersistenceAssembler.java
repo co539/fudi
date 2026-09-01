@@ -8,33 +8,24 @@ import java.util.stream.Collectors;
 public final class UserPersistenceAssembler {
 
     private UserPersistenceAssembler() {
-        /* This utility class should not be instantiated */
     }
 
     public static User toDomainFromPersistence(UserPersistenceEntity entity) {
-        if (entity == null) {
-            return null;
-        }
-
         var domain = new User();
+
         domain.setId(entity.getId());
         domain.setUsername(entity.getUsername());
         domain.setEmail(entity.getEmail());
         domain.setPassword(entity.getPassword());
-        domain.setRoles(
-                entity.getRoles().stream()
-                        .map(RolePersistenceAssembler::toDomainFromPersistence)
-                        .collect(Collectors.toSet())
-        );
+
+        entity.getRoles().stream()
+                .map(RolePersistenceAssembler::toDomainFromPersistence)
+                .forEach(domain::addRole);
 
         return domain;
     }
 
     public static UserPersistenceEntity toPersistenceFromDomain(User user) {
-        if (user == null) {
-            return null;
-        }
-
         var entity = new UserPersistenceEntity();
 
         if (user.getId() != null) {

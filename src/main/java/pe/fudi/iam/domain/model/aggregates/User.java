@@ -25,24 +25,20 @@ public class User {
     @Setter
     private String password;
 
-    @Setter
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
-        this.roles = new HashSet<>();
     }
 
     public User(Username username, Email email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = new HashSet<>();
     }
 
     public User(Username username, Email email, String password, List<Role> roles) {
         this(username, email, password);
         addRoles(roles);
-
     }
 
     public User addRole(Role role) {
@@ -55,5 +51,4 @@ public class User {
         this.roles.addAll(validatedRoleSet);
         return this;
     }
-
 }

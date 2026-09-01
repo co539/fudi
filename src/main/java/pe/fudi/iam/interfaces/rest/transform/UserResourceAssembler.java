@@ -4,10 +4,9 @@ import pe.fudi.iam.domain.model.aggregates.User;
 import pe.fudi.iam.domain.model.entities.Role;
 import pe.fudi.iam.interfaces.rest.resources.UserResource;
 
-public final class UserResourceFromEntityAssembler {
+public final class UserResourceAssembler {
 
-    private UserResourceFromEntityAssembler() {
-        /* This utility class should not be instantiated */
+    private UserResourceAssembler() {
     }
 
     public static UserResource toResourceFromEntity(User user) {

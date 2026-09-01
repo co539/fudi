@@ -11,25 +11,26 @@ import java.util.List;
 public class Role {
 
     private Long id;
+
     private Roles name;
 
     public Role(Roles name) {
         this.name = name;
     }
 
-    public String getStringName(){
+    public String getStringName() {
         return name.name();
     }
 
-    public static Role getDefaultRole(){
+    public static Role getDefaultRole() {
         return new Role(Roles.ROLE_USER);
     }
 
-    public static Role toRoleFromName(String name){
+    public static Role toRoleFromName(String name) {
         return new Role(Roles.valueOf(name));
     }
 
-    public static List<Role>validateRoleSet(List<Role> roles){
+    public static List<Role>validateRoleSet(List<Role> roles) {
         if (roles==null || roles.isEmpty()) return List.of(getDefaultRole());
         return roles;
     }

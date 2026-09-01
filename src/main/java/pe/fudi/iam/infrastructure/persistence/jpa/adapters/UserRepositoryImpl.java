@@ -46,7 +46,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existsByUsername(Username username) { return userPersistenceRepository.existsByUsername(username);
+    public boolean existsByUsername(Username username) {
+        return userPersistenceRepository.existsByUsername(username);
     }
 
     @Override

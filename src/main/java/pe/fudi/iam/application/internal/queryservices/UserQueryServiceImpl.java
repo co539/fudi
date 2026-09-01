@@ -3,6 +3,7 @@ package pe.fudi.iam.application.internal.queryservices;
 import jakarta.enterprise.context.ApplicationScoped;
 import pe.fudi.iam.application.queryservices.UserQueryService;
 import pe.fudi.iam.domain.model.aggregates.User;
+import pe.fudi.iam.domain.model.queries.GetAllUsersQuery;
 import pe.fudi.iam.domain.model.queries.GetUserByEmailQuery;
 import pe.fudi.iam.domain.model.queries.GetUserByIdQuery;
 import pe.fudi.iam.domain.model.queries.GetUserByUsernameQuery;
@@ -21,7 +22,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(GetAllUsersQuery query) {
         return userRepository.findAll();
     }
 
